@@ -1,51 +1,54 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>حروف | لعبة جماعية</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لعبة الحروف الجماعية</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="toast"></div>
-<section id="lobby" class="screen">
-  <div class="hero"><div class="logo">حروف</div><h1>لعبة الحروف الجماعية</h1><p>أنشئ غرفة وشارك الرمز مع اللاعبين.</p></div>
-  <div class="cards">
+
+  <div id="lobby">
+    <h1>لعبة الحروف الجماعية</h1>
     <div class="card">
-      <h2>إنشاء غرفة</h2><input id="hostName" placeholder="اسمك" maxlength="20"><button id="create">إنشاء اللعبة</button>
-      <div id="createdCode" class="code"></div>
+      <h2>إنشاء غرفة</h2>
+      <input type="text" id="host-name" placeholder="اسمك">
+      <button onclick="createRoom()">إنشاء اللعبة</button>
+      <p id="room-created-code"></p>
     </div>
+
     <div class="card">
-      <h2>دخول إلى غرفة</h2><input id="joinName" placeholder="اسم اللاعب" maxlength="20"><input id="roomCode" placeholder="رمز الغرفة" maxlength="5">
-      <div class="teamPick"><button data-team="red" class="pick red active">الأحمر</button><button data-team="green" class="pick green">الأخضر</button></div>
-      <button id="join">دخول</button>
+      <h2>دخول إلى غرفة</h2>
+      <input type="text" id="player-name" placeholder="اسم اللاعب">
+      <input type="text" id="room-code-input" placeholder="رمز الغرفة">
+      <div class="team-select">
+        <button id="btn-red" onclick="selectTeam('red')">الفريق الأحمر</button>
+        <button id="btn-green" onclick="selectTeam('green')">الفريق الأخضر</button>
+      </div>
+      <button onclick="joinRoom()">دخول</button>
     </div>
   </div>
-</section>
 
-<section id="game" class="screen hidden">
-<header class="gameHead">
-  <div class="score red"><span>الأحمر</span><b id="redScore">0</b></div>
-  <div><div class="room">الغرفة <b id="roomLabel">-----</b></div><div class="timer" id="timer">10</div></div>
-  <div class="score green"><span>الأخضر</span><b id="greenScore">0</b></div>
-</header>
-<main class="main">
-  <aside class="side">
-    <h3>الفريق الأحمر</h3><div id="redPlayers"></div>
-    <h3>الفريق الأخضر</h3><div id="greenPlayers"></div>
-    <button id="switchTeam">تغيير الفريق</button>
-  </aside>
-  <section class="center">
-    <div class="questionBox"><small id="roundLabel">الجولة 1</small><div id="question">اختر حرفًا من اللوحة</div></div>
-    <div class="board" id="board"></div>
-    <div class="actions">
-      <button id="buzz" class="buzzer">🔔 اضغط الجرس</button>
-      <button id="answerCorrect" class="correct hidden">✓ إجابة صحيحة</button>
-      <button id="answerWrong" class="wrong hidden">✕ إجابة خاطئة</button>
+  <div id="game-screen" style="display:none;">
+    <div class="game-info">
+      <div>غرفة: <span id="display-room-code"></span></div>
+      <div class="team-score red-score">الأحمر: <span id="score-red">0</span></div>
+      <div class="team-score green-score">الأخضر: <span id="score-green">0</span></div>
     </div>
-    <div class="hostActions hidden" id="hostActions"><button id="start">بدء اللعبة</button><button id="next">جولة جديدة</button><button id="end">إنهاء اللعبة</button></div>
-  </section>
-</main>
-<div id="buzzModal" class="modal hidden"><div class="modalCard"><div class="bigBell">🔔</div><h2 id="buzzWho">الفريق ضغط أولًا</h2><p>الحرف: <b id="buzzLetter">-</b></p><div id="modalActions" class="hidden"><button id="mCorrect" class="correct">إجابة صحيحة</button><button id="mWrong" class="wrong">إجابة خاطئة</button></div></div></div>
-</section>
-<script src="/socket.io/socket.io.js"></script><script src="app.js"></script>
-</body></html>
+
+    <div class="main-game-container">
+      <div id="game-grid-wrapper">
+        <div class="hex-grid-container" id="grid"></div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button onclick="startNewGame()">بدء اللعبة</button>
+      <button onclick="resetBoard()">جولة جديدة</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
